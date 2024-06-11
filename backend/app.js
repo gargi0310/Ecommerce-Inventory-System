@@ -5,9 +5,10 @@ app.use(express.json());
 
 //Route Importing
 const product = require("./routes/productRoute");
-
+const cart = require("./routes/cartRoute");
 
 //use
 app.use("/ims", product);
+app.use("/ims", cart);
 
 module.exports = app;

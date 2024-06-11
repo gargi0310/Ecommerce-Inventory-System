@@ -3,19 +3,19 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     productId:{
         type:String,
-        required:true
+        required:[true, "Enter Product Id"]
     },
     productName : {
         type:String,
-        required:true,
+        required:[true, "Enter Product Name"],
     },
     productPrice:{
         type:Number,
-        required:true
+        required:[true, "Enter Product Price"]
     },
     productQuantity:{
         type:Number,
-        required:true
+        required:[true, "Enter Product Quantity"]
     }
     
 })
