@@ -4,3 +4,5 @@ const router = express.Router();
 
 
 router.route("/cart/new").post(addItemToCart);
+
+module.exports = router;
