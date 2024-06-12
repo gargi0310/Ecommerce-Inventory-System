@@ -9,6 +9,5 @@ const cart = require("./routes/cartRoute");
 
 //use
 app.use("/ims", product);
-app.use("/ims", cart);
-
+app.use("/ims/cart", cart);
 module.exports = app;

@@ -47,7 +47,7 @@ exports.removeItemFromInventory = async(req, res)=>{
         }
 
         product.productQuantity -= productQuantity;
-        if(product.productQuantity <= 0){
+        if(product.productQuantity < 0){
             await Product.findOneAndDelete({productId});
             return res.json({
                 message:"Item Deleted Successfully"
