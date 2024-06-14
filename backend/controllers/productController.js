@@ -2,14 +2,14 @@ const Product = require('../modals/productModal');
 
 //Insert item
 exports.addItemToInventory = async(req, res)=>{
-    const {productId, productName, productPrice, productQuantity} = req.body;
+    const {productId,productDescription, productName, productPrice, productQuantity, productRating, images, productCategory, numOfReviews, reviews, createdAt} = req.body;
 
     try{
         let product = await Product.findOne({productId});
         if(product){
             product.productQuantity += productQuantity;
         }else{
-            product = new Product({productId, productName, productPrice, productQuantity});
+            product = new Product({productId,productDescription, productName, productPrice, productQuantity,productRating, images, productCategory, numOfReviews, reviews, createdAt});
         }
         await product.save();
         res.status(201).json({
@@ -32,6 +32,50 @@ exports.getInventoryItems = async(req, res)=>{
         success:true,
         products
     })
+}
+
+//update item
+exports.updateProduct = async(req, res)=>{
+
+    let product = await Product.findById(req.params.id);
+
+    if(!product){
+        return res.status(500).json({
+            success:false,
+            message:"Product not found"
+        })
+    }
+
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        new:true,
+        runValidators:true,
+        useFindAndModify:false
+    });
+
+    res.status(200).json({
+        success:true,
+        product
+    })
+
+}
+
+//Get Product Details
+exports.getProductDetails = async(req, res)=>{
+    const {productId} = req.body;
+
+    const product = await Product.findOne({productId});
+    if(!product){
+        return res.status(500).json({
+            success:false,
+            message:"Item not found"
+        })
+    }
+
+    res.status(200).json({
+        success:true,
+        product
+    })
+    
 }
 
 //delete Items
