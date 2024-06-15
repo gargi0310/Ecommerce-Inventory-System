@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const Cart = require('../modals/Cart');
 const Product = require('../modals/productModal');
+const catchAsyncError = require('../middleware/catchAsyncError');
+const ErrorHandler = require('../utils/erroHandler');
 
-exports.addItemToCart = async (req, res) => {
+exports.addItemToCart = catchAsyncError(async (req, res) => {
     const { customerId, items } = req.body;
 
     // Log the incoming request body
@@ -36,11 +38,11 @@ exports.addItemToCart = async (req, res) => {
             console.log('Found Product:', product);
 
             if (!product) {
-                return res.status(400).json({ message: `Product not found: ${productId}` });
+                return next(new ErrorHandler("Item Not Found", 404));
             }
 
             if (product.productQuantity < quantity) {
-                return res.status(400).json({ message: `Insufficient quantity for product: ${productId}` });
+                return next(new ErrorHandler("Insufficient Item quantity", 404))
             }
 
             const itemIndex = cart.items.findIndex(item => item.productId === productId);
@@ -68,4 +70,4 @@ exports.addItemToCart = async (req, res) => {
         console.error('Error occurred:', err);
         res.status(500).send('Internal Server Error');
     }
-};
+});

@@ -1,6 +1,7 @@
 const Product = require('../modals/productModal');
 const ErrorHandler = require('../utils/erroHandler');
 const catchAsyncError = require("../middleware/catchAsyncError");
+const ApiFeatures = require('../utils/apiFeatures');
 
 //Insert item
 exports.addItemToInventory = catchAsyncError(async(req, res)=>{
@@ -28,7 +29,14 @@ exports.addItemToInventory = catchAsyncError(async(req, res)=>{
 
 //Get all Items
 exports.getInventoryItems = catchAsyncError(async(req, res)=>{
-    const products = await Product.find();
+
+    const resultPerPage = 2;
+    const productCount = await Product.countDocuments();
+
+    const apifeatures =new ApiFeatures(Product.find(), req.query)
+    .search()
+    .filter().pagination(resultPerPage);
+    const products = await apifeatures.query;
 
     res.status(201).json({
         success:true,

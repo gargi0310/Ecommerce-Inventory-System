@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     productId:{
         type:String,
-        required:[true, "Enter Product Id"],
-        unique:true
+        required:[true, "Enter Product Id"]
     },
     productDescription:{
         type:String,
